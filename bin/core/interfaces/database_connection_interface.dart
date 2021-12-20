@@ -1,3 +1,5 @@
+import '../errors/database_errors.dart';
+
 class DatabaseSettings {
   final String host;
   final int port;
@@ -17,7 +19,7 @@ class DatabaseSettings {
 abstract class IDatabaseConnection<T> {
   T? conn;
 
-  Future<T> connect(DatabaseSettings settings);
+  Future<T> connect(DatabaseSettings? settings);
 
   Future<void> disconnect();
 }

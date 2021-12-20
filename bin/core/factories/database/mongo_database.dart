@@ -1,4 +1,5 @@
 import 'package:mongo_dart/mongo_dart.dart';
+import '../../errors/database_errors.dart';
 import '../../interfaces/database_connection_interface.dart';
 
 class MongoDatabase implements IDatabaseConnection<Db> {
@@ -6,7 +7,9 @@ class MongoDatabase implements IDatabaseConnection<Db> {
   Db? conn;
 
   @override
-  Future<Db> connect(DatabaseSettings settings) async {
+  Future<Db> connect(DatabaseSettings? settings) async {
+    if (settings == null) throw NullableSettings("Failed to create a instance of MongoDB when settings is null.");
+
     var db = await Db.create("mongodb+srv://${settings.user}:${settings.password}@${settings.host}:${settings.port}/${settings.db}");
     await db.open();
     return db;
