@@ -1,5 +1,3 @@
-import '../errors/database_errors.dart';
-
 class DatabaseSettings {
   final String host;
   final int port;

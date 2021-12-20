@@ -1,5 +1,3 @@
-import 'package:mysql1/mysql1.dart';
-
 import '../factories/database/mongo_database.dart';
 import '../factories/database/mysql_database.dart';
 import '../interfaces/database_connection_interface.dart';
