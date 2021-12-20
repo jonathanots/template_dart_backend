@@ -15,17 +15,9 @@ class DatabaseSettings {
 }
 
 abstract class IDatabaseConnection<T> {
+  T? conn;
+
   Future<T> connect(DatabaseSettings settings);
+
+  Future<void> disconnect();
 }
-
-// Mysql
-// ConnectionSettings(
-//   host: 'localhost', 
-//   port: 3306,
-//   user: 'bob',
-//   password: 'wibble',
-//   db: 'mydb'
-// )
-
-// MongoDB
-// Db("mongodb://localhost:27017/mongo_dart-blog");
