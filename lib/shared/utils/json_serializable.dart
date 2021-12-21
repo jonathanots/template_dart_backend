@@ -1,6 +1,6 @@
 import 'dart:mirrors';
 
-abstract class JsonSerializable<T extends Object> {
+abstract class JsonSerializable {
   Map<String, dynamic> toMap() {
     InstanceMirror im = reflect(this);
     ClassMirror cm = im.type;

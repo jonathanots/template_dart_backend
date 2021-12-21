@@ -1,6 +1,6 @@
-import 'package:dart_backend/user/json_serializable.dart';
+import 'package:dart_backend/shared/utils/json_serializable.dart';
 
-class UserEntity with JsonSerializable<UserEntity> {
+class UserEntity with JsonSerializable {
   final String name;
   final int age;
 
