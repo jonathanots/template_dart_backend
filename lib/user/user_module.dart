@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:dart_backend/shared/utils/json_serializable.dart';
 import 'package:dart_backend/user/user_entity.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
@@ -14,7 +16,7 @@ class UserModule extends Module {
     var user = UserEntity(name: 'Jonathan', age: 24);
     var map = user.toMap();
 
-    // var parsed = JsonSerializable.fromMap<UserEntity>({"name": "Jonathan", "age": 24});
-    return Response.ok(map);
+    var parsed = JsonSerializable.fromMap<UserEntity>({"name": "Jonathan", "age": 24});
+    return Response.ok(jsonEncode(map));
   }
 }

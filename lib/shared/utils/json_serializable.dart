@@ -14,16 +14,20 @@ abstract class JsonSerializable {
     return map;
   }
 
-  static fromMap<T>(Map source) {
-    InstanceMirror im = reflect(T);
-    ClassMirror cm = im.type;
+  static fromMap<B>(Map source) {
+    ClassMirror cm = reflectClass(B);
 
     Map<Symbol, dynamic> args = {};
 
+    print(source.entries);
+
     for (var i in source.entries) {
-      args[reflect(i.value).type.simpleName] = i.value;
+      args[Symbol(i.key)] = i.value;
     }
 
-    return cm.newInstance(cm.simpleName, [], args).reflectee;
+    InstanceMirror im = cm.newInstance(Symbol(''), [], args);
+    var o = im.reflectee;
+
+    return o;
   }
 }
