@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:mirrors';
 
 abstract class JsonSerializable {
@@ -12,6 +13,10 @@ abstract class JsonSerializable {
     });
 
     return map;
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
   }
 
   static fromMap<B>(Map source) {
@@ -30,4 +35,6 @@ abstract class JsonSerializable {
 
     return o;
   }
+
+  static fromJson<B>(String source) => fromMap<B>(jsonDecode(source));
 }
