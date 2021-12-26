@@ -1,6 +1,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
-import 'package:dart_backend/user/user_module.dart';
+
+import 'user/user_module.dart';
 
 class AppModule extends Module {
   @override

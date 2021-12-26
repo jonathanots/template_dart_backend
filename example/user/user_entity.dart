@@ -1,4 +1,4 @@
-import 'package:dart_backend/shared/utils/json_serializable.dart';
+import 'package:framework/core/utils/json_serializable.dart';
 
 class UserEntity with JsonSerializable {
   final String name;
