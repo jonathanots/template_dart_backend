@@ -9,7 +9,8 @@ abstract class JsonSerializable {
     Map<String, dynamic> map = {};
 
     cm.declarations.values.whereType<VariableMirror>().forEach((vm) {
-      map[MirrorSystem.getName(vm.simpleName)] = im.getField(vm.simpleName).reflectee;
+      map[MirrorSystem.getName(vm.simpleName)] =
+          im.getField(vm.simpleName).reflectee;
     });
 
     return map;
@@ -19,7 +20,8 @@ abstract class JsonSerializable {
     return jsonEncode(toMap());
   }
 
-  static fromMap<B>(Map source) {
+  static fromMap<B>(Map<String, dynamic> source,
+      {List<String> excludes = const []}) {
     ClassMirror cm = reflectClass(B);
 
     Map<Symbol, dynamic> args = {};
@@ -27,7 +29,9 @@ abstract class JsonSerializable {
     print(source.entries);
 
     for (var i in source.entries) {
-      args[Symbol(i.key)] = i.value;
+      if (!(excludes.indexWhere((field) => field == i.key) > -1)) {
+        args[Symbol(i.key)] = i.value;
+      }
     }
 
     InstanceMirror im = cm.newInstance(Symbol(''), [], args);

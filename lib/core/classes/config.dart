@@ -19,7 +19,7 @@ class Config {
   Future<void> initMongo() async {
     if (mongo == null) {
       mongo = MongoDatabase();
-      mongo!.connect(mongoSettings);
+      await mongo!.connect(mongoSettings);
     }
   }
 }

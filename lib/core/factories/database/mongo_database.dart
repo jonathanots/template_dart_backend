@@ -8,10 +8,23 @@ class MongoDatabase implements IDatabaseConnection<Db> {
 
   @override
   Future<Db> connect(DatabaseSettings? settings) async {
-    if (settings == null) throw NullableSettings("Failed to create a instance of MongoDB when settings is null.");
+    if (settings == null) {
+      throw NullableSettings(
+          "Failed to create a instance of MongoDB when settings is null.");
+    }
 
-    var db = await Db.create("mongodb+srv://${settings.user}:${settings.password}@${settings.host}:${settings.port}/${settings.db}");
+    var authString = '';
+    if ((settings.user?.isNotEmpty ?? false) &&
+        (settings.password?.isNotEmpty ?? false)) {
+      authString = "${settings.user}${settings.password}@";
+    }
+
+    var db = Db(
+        "mongodb://$authString${settings.host}:${settings.port}/${settings.db}");
     await db.open();
+
+    conn = db;
+
     return db;
   }
 
