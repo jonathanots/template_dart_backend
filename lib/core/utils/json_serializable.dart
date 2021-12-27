@@ -2,15 +2,19 @@ import 'dart:convert';
 import 'dart:mirrors';
 
 abstract class JsonSerializable {
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap({List<String> excludes = const []}) {
     InstanceMirror im = reflect(this);
     ClassMirror cm = im.type;
 
     Map<String, dynamic> map = {};
 
     cm.declarations.values.whereType<VariableMirror>().forEach((vm) {
-      map[MirrorSystem.getName(vm.simpleName)] =
-          im.getField(vm.simpleName).reflectee;
+      final key = MirrorSystem.getName(vm.simpleName);
+      final value = im.getField(vm.simpleName).reflectee;
+
+      if (!(excludes.indexWhere((field) => field == key) > -1)) {
+        map[key] = value;
+      }
     });
 
     return map;
@@ -20,7 +24,7 @@ abstract class JsonSerializable {
     return jsonEncode(toMap());
   }
 
-  static fromMap<B>(Map<String, dynamic> source,
+  static fromMap<B extends Object>(Map<String, dynamic> source,
       {List<String> excludes = const []}) {
     ClassMirror cm = reflectClass(B);
 
@@ -40,5 +44,6 @@ abstract class JsonSerializable {
     return o;
   }
 
-  static fromJson<B>(String source) => fromMap<B>(jsonDecode(source));
+  static fromJson<B extends Object>(String source) =>
+      fromMap<B>(jsonDecode(source));
 }

@@ -1,11 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:framework/core/classes/config.dart';
-import 'package:framework/core/interfaces/database_connection_interface.dart';
 import 'package:framework/core/utils/json_serializable.dart';
-import 'package:mongo_dart/mongo_dart.dart';
-
 import '../shared/controllers/app_controller.dart';
 import '../shared/utils/response.dart';
 import 'user_entity.dart';
@@ -32,6 +28,7 @@ class UserModule extends Module {
             (e) => JsonSerializable.fromMap<UserEntity>(e, excludes: ['_id']))
         .toList();
 
-    return HttpResponse.ok(jsonEncode(response.map((e) => e.toMap()).toList()));
+    return HttpResponse.ok(
+        jsonEncode(response.map((e) => e.toMap(excludes: ['name'])).toList()));
   }
 }
