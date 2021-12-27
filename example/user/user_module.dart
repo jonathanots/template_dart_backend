@@ -1,34 +1,15 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:framework/core/utils/json_serializable.dart';
-import '../shared/controllers/app_controller.dart';
-import '../shared/utils/response.dart';
-import 'user_entity.dart';
-import 'package:shelf/shelf.dart';
+import 'usecases/create_user.dart';
+import 'usecases/find_one_user.dart';
+import 'usecases/find_user.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
 class UserModule extends Module {
   @override
   List<ModularRoute> get routes => [
-        Route.get('/', (ModularArguments args) => test()),
+        Route.get('/', (ModularArguments args) => FindUserUsecase().call(args)),
+        Route.get(
+            '/:id', (ModularArguments args) => FindOneUserUsecase().call(args)),
+        Route.post(
+            '/', (ModularArguments args) => CreateUserUsecase().call(args)),
       ];
-
-  FutureOr<Response> test() async {
-    var app = Modular.get<AppController>();
-
-    var mongo = app.config.mongo!.conn!;
-
-    var coll = mongo.collection('users');
-
-    var results = await coll.find().toList();
-
-    var response = results
-        .map<UserEntity>(
-            (e) => JsonSerializable.fromMap<UserEntity>(e, excludes: ['_id']))
-        .toList();
-
-    return HttpResponse.ok(
-        jsonEncode(response.map((e) => e.toMap(excludes: ['name'])).toList()));
-  }
 }

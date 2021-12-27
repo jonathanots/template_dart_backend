@@ -16,10 +16,24 @@ class Config {
     }
   }
 
+  Future<void> disconnectMySql() async {
+    if (mysql != null) {
+      await mysql!.disconnect();
+      mysql = null;
+    }
+  }
+
   Future<void> initMongo() async {
     if (mongo == null) {
       mongo = MongoDatabase();
       await mongo!.connect(mongoSettings);
+    }
+  }
+
+  Future<void> disconnectMongo() async {
+    if (mongo != null) {
+      await mongo!.disconnect();
+      mongo = null;
     }
   }
 }

@@ -24,10 +24,19 @@ class HttpResponse {
   /// An empty list will cause the header to be omitted.
   static Response ok(body) {
     final overrideHeaders = {
-      ACCESS_CONTROL_ALLOW_ORIGIN: 'example.com',
+      ACCESS_CONTROL_ALLOW_ORIGIN: '*',
       'Content-Type': 'application/json;charset=utf-8'
     };
 
     return Response.ok(body, headers: overrideHeaders);
+  }
+
+  static Response notFound(body) {
+    final overrideHeaders = {
+      ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+      'Content-Type': 'application/json;charset=utf-8'
+    };
+
+    return Response.notFound(body, headers: overrideHeaders);
   }
 }

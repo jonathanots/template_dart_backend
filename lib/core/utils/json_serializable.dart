@@ -24,13 +24,11 @@ abstract class JsonSerializable {
     return jsonEncode(toMap());
   }
 
-  static fromMap<B extends Object>(Map<String, dynamic> source,
+  static B fromMap<B extends Object>(Map<String, dynamic> source,
       {List<String> excludes = const []}) {
     ClassMirror cm = reflectClass(B);
 
     Map<Symbol, dynamic> args = {};
-
-    print(source.entries);
 
     for (var i in source.entries) {
       if (!(excludes.indexWhere((field) => field == i.key) > -1)) {
@@ -44,6 +42,6 @@ abstract class JsonSerializable {
     return o;
   }
 
-  static fromJson<B extends Object>(String source) =>
+  static B fromJson<B extends Object>(String source) =>
       fromMap<B>(jsonDecode(source));
 }
