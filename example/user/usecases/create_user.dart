@@ -8,7 +8,6 @@ import 'package:shelf_modular/shelf_modular.dart';
 import '../../shared/controllers/app_controller.dart';
 import '../../shared/utils/response.dart';
 import '../user_entity.dart';
-import 'find_one_user.dart';
 
 abstract class ICreateUserUsecase {
   FutureOr<Response> call(ModularArguments args);
