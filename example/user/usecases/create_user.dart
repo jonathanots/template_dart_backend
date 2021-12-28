@@ -20,28 +20,22 @@ class CreateUserUsecase implements ICreateUserUsecase {
     final app = Modular.get<AppController>();
 
     try {
-      var findUserResponse = await FindOneUserUsecase().call(args);
+      await app.config.initMongo();
+      var mongo = app.config.mongo!.conn!;
 
-      if (findUserResponse.statusCode == 404) {
-        await app.config.initMongo();
-        var mongo = app.config.mongo!.conn!;
+      var user =
+          JsonSerializable.fromMap<UserEntity>(args.data, excludes: ['id']);
 
-        var user =
-            JsonSerializable.fromMap<UserEntity>(args.data, excludes: ['id']);
+      var coll = mongo.collection('users');
 
-        var coll = mongo.collection('users');
+      final result = await coll.insert(user.toMap());
 
-        final result = await coll.insert(user.toMap());
-
-        if (result.isNotEmpty) {
-          return HttpResponse.ok(jsonEncode(user.toMap()));
-        }
-
-        throw Exception('Failed at insert new user');
+      if (result.isNotEmpty) {
+        return HttpResponse.ok(jsonEncode(user.toMap()));
       }
 
-      throw Exception('User already exists');
-    } catch (e) {
+      throw Exception('Failed at insert new user');
+    } on Exception catch (e) {
       return HttpResponse.notFound(jsonEncode({"error": e.toString()}));
     } finally {
       await app.config.disconnectMongo();

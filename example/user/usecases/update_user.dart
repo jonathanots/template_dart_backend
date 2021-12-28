@@ -31,8 +31,22 @@ class UpdateUserUsecase implements IUpdateUserUsecase {
 
         var modifier = ModifierBuilder();
 
+        var defaultUser = UserEntity(name: "", age: 1);
+
+        var mapUser = defaultUser.toMap();
+
+        var invalidFields = [];
+
         for (var entry in (args.data as Map<String, dynamic>).entries) {
-          modifier.set(entry.key, entry.value);
+          if (mapUser.keys.toList().contains(entry.key)) {
+            modifier.set(entry.key, entry.value);
+          } else {
+            invalidFields.add(entry.key);
+          }
+        }
+
+        if (invalidFields.isNotEmpty) {
+          throw Exception("Invalid fields: [ ${invalidFields.join(' , ')} ]");
         }
 
         final result =
