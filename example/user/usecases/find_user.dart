@@ -31,7 +31,7 @@ class FindUserUsecase implements IFindUserUsecase {
           ? int.parse(args.queryParams['amount']!)
           : 100;
 
-      var results =
+      final results =
           await coll.find().skip((page - 1) * limit).take(limit).toList();
 
       var response = results
@@ -44,7 +44,7 @@ class FindUserUsecase implements IFindUserUsecase {
     } catch (e) {
       return HttpResponse.notFound(jsonEncode({"error": e.toString()}));
     } finally {
-      app.config.disconnectMongo();
+      await app.config.disconnectMongo();
     }
   }
 }

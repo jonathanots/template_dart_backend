@@ -24,7 +24,7 @@ class FindOneUserUsecase implements IFindOneUserUsecase {
 
       var coll = mongo.collection('users');
 
-      var result = await coll.findOne({'id': args.params['id']});
+      final result = await coll.findOne({'id': args.params['id']});
 
       if (result == null) {
         throw Exception('User not found');
@@ -37,7 +37,7 @@ class FindOneUserUsecase implements IFindOneUserUsecase {
     } catch (e) {
       return HttpResponse.notFound(jsonEncode({'error': e.toString()}));
     } finally {
-      app.config.disconnectMongo();
+      await app.config.disconnectMongo();
     }
   }
 }
