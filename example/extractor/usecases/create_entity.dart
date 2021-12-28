@@ -11,7 +11,7 @@ import '../../shared/utils/response.dart';
 abstract class IExtractorCreateEntity {
   FutureOr<Response> call(ModularArguments args);
 
-  Future<void> _createFile(Map<String, dynamic> source, String moduleName);
+  Future<void> _createFile(Map<String, dynamic> source, String entity);
 }
 
 class ExtractorCreateEntity implements IExtractorCreateEntity {
@@ -22,14 +22,14 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
       await app.config.initMongo();
       var mongo = app.config.mongo!.conn!;
 
-      var moduleName = args.params["module"];
+      var entity = args.params["module"];
 
-      var coll = mongo.collection(moduleName);
+      var coll = mongo.collection(entity);
 
       var result = await coll.findOne();
 
       if (result != null) {
-        await _createFile(result, moduleName);
+        await _createFile(result, entity);
         return HttpResponse.ok(jsonEncode(
             {"status": "success", "message": "File created successufully"}));
       }
@@ -44,10 +44,8 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
   }
 
   @override
-  Future<void> _createFile(
-      Map<String, dynamic> source, String moduleName) async {
-    var className =
-        "${moduleName[0].toUpperCase()}${moduleName.substring(1)}Entity";
+  Future<void> _createFile(Map<String, dynamic> source, String entity) async {
+    var className = "${entity[0].toUpperCase()}${entity.substring(1)}Entity";
 
     var content = "";
 
@@ -74,7 +72,7 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
     content += "}";
 
     var path =
-        "example/${moduleName.toLowerCase()}/${moduleName.toLowerCase()}_entity.dart";
+        "example/${entity.toLowerCase()}/${entity.toLowerCase()}_entity.dart";
 
     var file = await File(path).create(recursive: true);
 

@@ -8,13 +8,13 @@ import 'package:shelf_modular/shelf_modular.dart';
 import '../../shared/controllers/app_controller.dart';
 import '../../shared/utils/response.dart';
 
-abstract class IExtractorCreateModule {
+abstract class IExtractorCreateCUsecase {
   FutureOr<Response> call(ModularArguments args);
 
   Future<void> _createFile(Map<String, dynamic> source, String moduleName);
 }
 
-class ExtractorCreateEntity implements IExtractorCreateModule {
+class ExtractorCreateEntity implements IExtractorCreateCUsecase {
   @override
   Future<Response> call(ModularArguments args) async {
     final app = Modular.get<AppController>();
