@@ -14,7 +14,7 @@ abstract class IExtractorCreateModule {
   Future<void> _createFile(Map<String, dynamic> source, String moduleName);
 }
 
-class ExtractorCreateEntity implements IExtractorCreateModule {
+class ExtractorCreateModule implements IExtractorCreateModule {
   @override
   Future<Response> call(ModularArguments args) async {
     final app = Modular.get<AppController>();
@@ -47,34 +47,39 @@ class ExtractorCreateEntity implements IExtractorCreateModule {
   Future<void> _createFile(
       Map<String, dynamic> source, String moduleName) async {
     var className =
-        "${moduleName[0].toUpperCase()}${moduleName.substring(1)}Entity";
+        "${moduleName[0].toUpperCase()}${moduleName.substring(1)}Module";
 
     var content = "";
 
+    content += "import 'package:shelf_modular/shelf_modular.dart';\n";
+
+    content += "\n";
+
+    content += "import 'usecases/create_${moduleName.toLowerCase()}.dart';\n";
+    content += "import 'usecases/find_${moduleName.toLowerCase()}.dart';\n";
+    content += "import 'usecases/find_one_${moduleName.toLowerCase()}.dart';\n";
+    content += "import 'usecases/udpate_${moduleName.toLowerCase()}.dart';\n";
+    content += "import 'usecases/delete_${moduleName.toLowerCase()}.dart';\n";
+
+    content += "\nclass $className extends Module {\n";
+    content += "\t@override\n";
+    content += "\tList<ModularRoute> get routes => [\n";
     content +=
-        "import 'package:framework/core/utils/json_serializable.dart';\n";
+        "\t\tRoute.post('/',(ModularArguments args) => Create${moduleName[0].toUpperCase()}${moduleName.substring(1)}Usecase().call(args)),\n";
+    content +=
+        "\t\tRoute.get('/',(ModularArguments args) => Find${moduleName[0].toUpperCase()}${moduleName.substring(1)}Usecase().call(args)),\n";
+    content +=
+        "\t\tRoute.get('/:id',(ModularArguments args) => FindOne${moduleName[0].toUpperCase()}${moduleName.substring(1)}Usecase().call(args)),\n";
+    content +=
+        "\t\tRoute.put('/:id',(ModularArguments args) => Update${moduleName[0].toUpperCase()}${moduleName.substring(1)}Usecase().call(args)),\n";
+    content +=
+        "\t\tRoute.delete('/:id',(ModularArguments args) => Delete${moduleName[0].toUpperCase()}${moduleName.substring(1)}Usecase().call(args)),\n";
+    content += "\t];\n";
 
-    content += "import 'package:uuid/uuid.dart';\n";
-
-    content += "\nclass $className with JsonSerializable {\n";
-
-    content += "\tlate String? id;\n";
-
-    var constructorFields = "";
-
-    for (var field in source.entries) {
-      if (field.key == "_id") continue;
-      content += "\tfinal ${field.value.runtimeType} ${field.key};\n";
-      constructorFields += "required this.${field.key},";
-    }
-
-    content += "\n\t$className({this.id, $constructorFields}) {\n";
-    content += "\t\tid ??= Uuid().v4();\n";
-    content += "\t}\n";
-    content += "}";
+    content += "}\n";
 
     var path =
-        "example/${moduleName.toLowerCase()}/${moduleName.toLowerCase()}_entity.dart";
+        "example/${moduleName.toLowerCase()}/${moduleName.toLowerCase()}_module.dart";
 
     var file = await File(path).create(recursive: true);
 

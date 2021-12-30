@@ -61,7 +61,7 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
     var constructorFields = "";
 
     for (var field in source.entries) {
-      if (field.key == "_id") continue;
+      if (field.key == "_id" || field.key == "id") continue;
       content += "\tfinal ${field.value.runtimeType} ${field.key};\n";
       constructorFields += "required this.${field.key},";
     }
