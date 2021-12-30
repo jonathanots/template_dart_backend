@@ -58,7 +58,7 @@ class ExtractorCreateModule implements IExtractorCreateModule {
     content += "import 'usecases/create_${moduleName.toLowerCase()}.dart';\n";
     content += "import 'usecases/find_${moduleName.toLowerCase()}.dart';\n";
     content += "import 'usecases/find_one_${moduleName.toLowerCase()}.dart';\n";
-    content += "import 'usecases/udpate_${moduleName.toLowerCase()}.dart';\n";
+    content += "import 'usecases/update_${moduleName.toLowerCase()}.dart';\n";
     content += "import 'usecases/delete_${moduleName.toLowerCase()}.dart';\n";
 
     content += "\nclass $className extends Module {\n";

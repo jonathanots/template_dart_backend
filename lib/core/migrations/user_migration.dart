@@ -18,7 +18,6 @@ const userMigration = {
     "required": true,
     "nullable": false,
     "isNegative": false,
-    "isFloat": false,
   },
   "company": {
     "type": "list",
