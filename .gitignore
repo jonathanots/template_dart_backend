@@ -6,7 +6,6 @@
 
 # Conventional directory for build output.
 build/
-example/shared/utils/constants.dart
 
 # Keys created for auth or encode key
 .ssh/*
