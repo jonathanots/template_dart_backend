@@ -1,6 +1,7 @@
 import 'package:framework/core/classes/config.dart';
+import 'package:framework/core/interfaces/database_connection_interface.dart';
 
-import '../utils/constants.dart';
+import '../../env.dart';
 
 class AppController {
   late Config config;
@@ -17,7 +18,11 @@ class AppController {
 
   _init() {
     config = Config();
-    config.mongoSettings = mongoSettings;
+    config.mongoSettings = DatabaseSettings(
+      host: Env.ndbHost,
+      port: Env.ndbPort,
+      db: Env.ndbName,
+    );
     config.initMongo();
   }
 }

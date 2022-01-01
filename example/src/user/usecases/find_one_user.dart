@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:framework/core/utils/json_serializable.dart';
+import 'package:framework/core/factories/response.dart';
+import 'package:json_serializable_generic/json_serializable.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import '../../shared/controllers/app_controller.dart';
-import '../../shared/utils/response.dart';
+import '../../../shared/controllers/app_controller.dart';
 import '../user_entity.dart';
 
 abstract class IFindOneUserUsecase {
@@ -35,7 +35,7 @@ class FindOneUserUsecase implements IFindOneUserUsecase {
 
       return HttpResponse.ok(jsonEncode(user.toMap(excludes: ['_id'])));
     } catch (e) {
-      return HttpResponse.notFound(jsonEncode({'error': e.toString()}));
+      return HttpResponse.error(jsonEncode({'error': e.toString()}));
     } finally {
       await app.config.disconnectMongo();
     }

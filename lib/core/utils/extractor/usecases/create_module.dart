@@ -2,31 +2,43 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:framework/core/classes/config.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import '../../shared/controllers/app_controller.dart';
-import '../../shared/utils/response.dart';
+import 'package:framework/core/factories/response.dart';
+import 'create_c_usecase.dart';
+import 'create_d_usecase.dart';
+import 'create_entity.dart';
+import 'create_f_one_usecase.dart';
+import 'create_f_usecase.dart';
+import 'create_u_usecase.dart';
 
 abstract class IExtractorCreateModule {
-  FutureOr<Response> call(ModularArguments args);
+  FutureOr<Response> call(ModularArguments args, Config config);
 
   Future<void> _createFile(Map<String, dynamic> source, String moduleName);
 }
 
 class ExtractorCreateModule implements IExtractorCreateModule {
   @override
-  Future<Response> call(ModularArguments args) async {
-    final app = Modular.get<AppController>();
+  Future<Response> call(ModularArguments args, Config config) async {
     try {
-      await app.config.initMongo();
-      var mongo = app.config.mongo!.conn!;
+      await config.initMongo();
+      var mongo = config.mongo!.conn!;
 
       var moduleName = args.params["module"];
 
       var coll = mongo.collection(moduleName);
 
       var result = await coll.findOne();
+
+      await ExtractorCreateEntity().call(args, config);
+      await ExtractorCreateUsecase().call(args, config);
+      await ExtractorFindUsecase().call(args, config);
+      await ExtractorFindOneUsecase().call(args, config);
+      await ExtractorUpdateUsecase().call(args, config);
+      await ExtractorDeleteUsecase().call(args, config);
 
       if (result != null) {
         await _createFile(result, moduleName);
@@ -37,9 +49,9 @@ class ExtractorCreateModule implements IExtractorCreateModule {
       throw Exception(
           "Failed at find some data on collection, make sure your collection exists and has at least one document inserted");
     } catch (e) {
-      return HttpResponse.notFound(jsonEncode({"error": e.toString()}));
+      throw HttpResponse.error(jsonEncode({"error": e.toString()}));
     } finally {
-      await app.config.disconnectMongo();
+      await config.disconnectMongo();
     }
   }
 
@@ -79,7 +91,7 @@ class ExtractorCreateModule implements IExtractorCreateModule {
     content += "}\n";
 
     var path =
-        "example/${moduleName.toLowerCase()}/${moduleName.toLowerCase()}_module.dart";
+        "src/${moduleName.toLowerCase()}/${moduleName.toLowerCase()}_module.dart";
 
     var file = await File(path).create(recursive: true);
 

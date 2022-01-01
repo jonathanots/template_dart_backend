@@ -1,4 +1,4 @@
-import 'package:framework/core/utils/json_serializable.dart';
+import 'package:json_serializable_generic/json_serializable.dart';
 import 'package:uuid/uuid.dart';
 
 class UserEntity with JsonSerializable {

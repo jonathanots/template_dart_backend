@@ -22,6 +22,15 @@ class HttpResponse {
   /// Content-Type header, it will be set to "application/octet-stream".
   /// [headers] must contain values that are either `String` or `List<String>`.
   /// An empty list will cause the header to be omitted.
+  static Response created(body) {
+    final overrideHeaders = {
+      ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+      'Content-Type': 'application/json;charset=utf-8'
+    };
+
+    return Response(201, body: body, headers: overrideHeaders);
+  }
+
   static Response ok(body) {
     final overrideHeaders = {
       ACCESS_CONTROL_ALLOW_ORIGIN: '*',
@@ -29,6 +38,15 @@ class HttpResponse {
     };
 
     return Response.ok(body, headers: overrideHeaders);
+  }
+
+  static Response error(body, [int statusCode = 400]) {
+    final overrideHeaders = {
+      ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+      'Content-Type': 'application/json;charset=utf-8'
+    };
+
+    return Response(statusCode, body: body, headers: overrideHeaders);
   }
 
   static Response notFound(body) {

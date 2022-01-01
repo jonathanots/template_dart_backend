@@ -2,25 +2,24 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:framework/core/classes/config.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import '../../shared/controllers/app_controller.dart';
-import '../../shared/utils/response.dart';
+import 'package:framework/core/factories/response.dart';
 
 abstract class IExtractorCreateEntity {
-  FutureOr<Response> call(ModularArguments args);
+  FutureOr<Response> call(ModularArguments args, Config config);
 
   Future<void> _createFile(Map<String, dynamic> source, String entity);
 }
 
 class ExtractorCreateEntity implements IExtractorCreateEntity {
   @override
-  Future<Response> call(ModularArguments args) async {
-    final app = Modular.get<AppController>();
+  Future<Response> call(ModularArguments args, Config config) async {
     try {
-      await app.config.initMongo();
-      var mongo = app.config.mongo!.conn!;
+      await config.initMongo();
+      var mongo = config.mongo!.conn!;
 
       var entity = args.params["module"];
 
@@ -37,9 +36,9 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
       throw Exception(
           "Failed at find some data on collection, make sure your collection exists and has at least one document inserted");
     } catch (e) {
-      return HttpResponse.notFound(jsonEncode({"error": e.toString()}));
+      throw HttpResponse.error(jsonEncode({"error": e.toString()}));
     } finally {
-      await app.config.disconnectMongo();
+      await config.disconnectMongo();
     }
   }
 
@@ -50,7 +49,7 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
     var content = "";
 
     content +=
-        "import 'package:framework/core/utils/json_serializable.dart';\n";
+        "import 'package:json_serializable_generic/json_serializable.dart';\n";
 
     content += "import 'package:uuid/uuid.dart';\n";
 
@@ -72,7 +71,7 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
     content += "}";
 
     var path =
-        "example/${entity.toLowerCase()}/${entity.toLowerCase()}_entity.dart";
+        "src/${entity.toLowerCase()}/${entity.toLowerCase()}_entity.dart";
 
     var file = await File(path).create(recursive: true);
 

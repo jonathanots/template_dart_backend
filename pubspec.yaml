@@ -12,6 +12,7 @@ dev_dependencies:
   
 dependencies: 
   dio: ^4.0.4
+  json_serializable_generic: ^1.0.0
   mongo_dart: ^0.7.4
   mysql1: ^0.19.2
   shelf: ^1.2.0
