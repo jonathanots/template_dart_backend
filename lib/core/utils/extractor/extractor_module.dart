@@ -1,4 +1,4 @@
-import 'package:framework/core/classes/config.dart';
+import 'package:backend_tool/core/classes/config.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
 import 'usecases/create_c_usecase.dart';

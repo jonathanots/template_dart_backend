@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:framework/core/factories/response.dart';
+import 'package:backend_tool/core/factories/response.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import '../../../shared/controllers/app_controller.dart';
+import '../../shared/controllers/app_controller.dart';
 import '../user_entity.dart';
 import 'find_one_user.dart';
 

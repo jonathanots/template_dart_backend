@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:framework/core/classes/config.dart';
+import 'package:backend_tool/core/classes/config.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import 'package:framework/core/factories/response.dart';
+import 'package:backend_tool/core/factories/response.dart';
 
 abstract class IExtractorFindOneCUsecase {
   FutureOr<Response> call(ModularArguments args, Config config);
@@ -63,7 +63,7 @@ class ExtractorFindOneUsecase implements IExtractorFindOneCUsecase {
     content += "\n";
 
     content += "import'../../../shared/controllers/app_controller.dart';\n";
-    content += "import 'package:framework/core/factories/response.dart';\n";
+    content += "import 'package:backend_tool/core/factories/response.dart';\n";
     content += "import '../${moduleName.toLowerCase()}_entity.dart';\n";
 
     content += "\nabstract class IFindOne$className {\n";
@@ -118,7 +118,7 @@ class ExtractorFindOneUsecase implements IExtractorFindOneCUsecase {
     content += "}\n";
 
     var path =
-        "src/${moduleName.toLowerCase()}/usecases/find_one_${moduleName.toLowerCase()}.dart";
+        "src/modules/${moduleName.toLowerCase()}/usecases/find_one_${moduleName.toLowerCase()}.dart";
 
     var file = await File(path).create(recursive: true);
 

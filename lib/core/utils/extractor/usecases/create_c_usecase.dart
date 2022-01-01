@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:framework/core/classes/config.dart';
+import 'package:backend_tool/core/classes/config.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import 'package:framework/core/factories/response.dart';
+import 'package:backend_tool/core/factories/response.dart';
 
 abstract class IExtractorCreateCUsecase {
   FutureOr<Response> call(ModularArguments args, Config config);
@@ -57,7 +57,7 @@ class ExtractorCreateUsecase implements IExtractorCreateCUsecase {
     content += "import 'package:shelf/shelf.dart';\n";
     content += "import 'package:shelf_modular/shelf_modular.dart';\n";
     content += "import'../../../shared/controllers/app_controller.dart';\n";
-    content += "import 'package:framework/core/factories/response.dart';\n";
+    content += "import 'package:backend_tool/core/factories/response.dart';\n";
     content += "import '../${moduleName.toLowerCase()}_entity.dart';\n";
 
     content += "\nabstract class ICreate$className {\n";
@@ -104,7 +104,7 @@ class ExtractorCreateUsecase implements IExtractorCreateCUsecase {
     content += "}\n";
 
     var path =
-        "src/${moduleName.toLowerCase()}/usecases/create_${moduleName.toLowerCase()}.dart";
+        "src/modules/${moduleName.toLowerCase()}/usecases/create_${moduleName.toLowerCase()}.dart";
 
     var file = await File(path).create(recursive: true);
 

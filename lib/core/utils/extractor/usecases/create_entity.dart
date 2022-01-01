@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:framework/core/classes/config.dart';
+import 'package:backend_tool/core/classes/config.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import 'package:framework/core/factories/response.dart';
+import 'package:backend_tool/core/factories/response.dart';
 
 abstract class IExtractorCreateEntity {
   FutureOr<Response> call(ModularArguments args, Config config);
@@ -71,7 +71,7 @@ class ExtractorCreateEntity implements IExtractorCreateEntity {
     content += "}";
 
     var path =
-        "src/${entity.toLowerCase()}/${entity.toLowerCase()}_entity.dart";
+        "src/modules/${entity.toLowerCase()}/${entity.toLowerCase()}_entity.dart";
 
     var file = await File(path).create(recursive: true);
 

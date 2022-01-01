@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:framework/core/classes/config.dart';
+import 'package:backend_tool/core/classes/config.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import 'package:framework/core/factories/response.dart';
+import 'package:backend_tool/core/factories/response.dart';
 
 abstract class IExtractorDeleteCUsecase {
   FutureOr<Response> call(ModularArguments args, Config config);
@@ -61,7 +61,7 @@ class ExtractorDeleteUsecase implements IExtractorDeleteCUsecase {
     content += "\n";
 
     content += "import'../../../shared/controllers/app_controller.dart';\n";
-    content += "import 'package:framework/core/factories/response.dart';\n";
+    content += "import 'package:backend_tool/core/factories/response.dart';\n";
     content += "import 'find_one_${moduleName.toLowerCase()}.dart';\n";
 
     content += "\nabstract class IDelete$className {\n";
@@ -117,7 +117,7 @@ class ExtractorDeleteUsecase implements IExtractorDeleteCUsecase {
     content += "}\n";
 
     var path =
-        "src/${moduleName.toLowerCase()}/usecases/delete_${moduleName.toLowerCase()}.dart";
+        "src/modules/${moduleName.toLowerCase()}/usecases/delete_${moduleName.toLowerCase()}.dart";
 
     var file = await File(path).create(recursive: true);
 

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:framework/core/classes/config.dart';
+import 'package:backend_tool/core/classes/config.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import 'package:framework/core/factories/response.dart';
+import 'package:backend_tool/core/factories/response.dart';
 import 'create_c_usecase.dart';
 import 'create_d_usecase.dart';
 import 'create_entity.dart';
@@ -91,7 +91,7 @@ class ExtractorCreateModule implements IExtractorCreateModule {
     content += "}\n";
 
     var path =
-        "src/${moduleName.toLowerCase()}/${moduleName.toLowerCase()}_module.dart";
+        "src/modules/${moduleName.toLowerCase()}/${moduleName.toLowerCase()}_module.dart";
 
     var file = await File(path).create(recursive: true);
 

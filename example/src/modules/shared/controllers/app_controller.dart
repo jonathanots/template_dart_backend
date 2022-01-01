@@ -1,7 +1,7 @@
-import 'package:framework/core/classes/config.dart';
-import 'package:framework/core/interfaces/database_connection_interface.dart';
+import 'package:backend_tool/core/classes/config.dart';
+import 'package:backend_tool/core/interfaces/database_connection_interface.dart';
 
-import '../../env.dart';
+import '../../../../env.dart';
 
 class AppController {
   late Config config;
