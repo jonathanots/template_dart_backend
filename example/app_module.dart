@@ -19,7 +19,7 @@ class AppModule extends Module {
             (ModularArguments args) => Response.ok(
                 jsonEncode({"status": 200, "message": "Server is running"}))),
         // Route.module('/user', module: UserModule()),
-        // Route.module('/extractor',
-        //     module: ExtractorModule(Modular.get<AppController>().config)),
+        Route.module('/extractor',
+            module: ExtractorModule(Modular.get<AppController>().config)),
       ];
 }

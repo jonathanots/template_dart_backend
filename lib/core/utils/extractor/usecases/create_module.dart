@@ -33,21 +33,22 @@ class ExtractorCreateModule implements IExtractorCreateModule {
 
       var result = await coll.findOne();
 
-      await ExtractorCreateEntity().call(args, config);
-      await ExtractorCreateUsecase().call(args, config);
-      await ExtractorFindUsecase().call(args, config);
-      await ExtractorFindOneUsecase().call(args, config);
-      await ExtractorUpdateUsecase().call(args, config);
-      await ExtractorDeleteUsecase().call(args, config);
-
-      if (result != null) {
-        await _createFile(result, moduleName);
-        return HttpResponse.ok(jsonEncode(
-            {"status": "success", "message": "File created successufully"}));
+      if (result == null) {
+        throw Exception(
+            "Failed at find some data on collection, make sure your collection exists and has at least one document inserted");
       }
 
-      throw Exception(
-          "Failed at find some data on collection, make sure your collection exists and has at least one document inserted");
+      // await ExtractorCreateEntity().call(args, config);
+      await ExtractorCreateEntity().call(result, moduleName);
+      // await ExtractorCreateUsecase().call(args, config);
+      // await ExtractorFindUsecase().call(args, config);
+      // await ExtractorFindOneUsecase().call(args, config);
+      // await ExtractorUpdateUsecase().call(args, config);
+      // await ExtractorDeleteUsecase().call(args, config);
+
+      await _createFile(result, moduleName);
+      return HttpResponse.ok(jsonEncode(
+          {"status": "success", "message": "File created successufully"}));
     } catch (e) {
       throw HttpResponse.error(jsonEncode({"error": e.toString()}));
     } finally {

@@ -16,10 +16,10 @@ class ExtractorModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        Route.get(
-            '/entity/:module',
-            (ModularArguments args) =>
-                ExtractorCreateEntity().call(args, config)),
+        // Route.get(
+        //     '/entity/:module',
+        //     (ModularArguments args) =>
+        //         ExtractorCreateEntity().call(args, config)),
         Route.get(
             '/create/:module',
             (ModularArguments args) =>
